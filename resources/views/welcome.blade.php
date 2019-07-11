@@ -1,45 +1,31 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Laravel</title>
+@extends('layouts.app')
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-
-        <style>
-            html, body {
-                height: 100%;
-            }
-
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                display: table;
-                font-weight: 100;
-                font-family: 'Lato';
-            }
-
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
-
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
-
-            .title {
-                font-size: 96px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="content">
-                <div class="title">Laravel 5</div>
+@section('content')
+    @if (Auth::check())
+        <?php $user = Auth::user(); ?>
+        {{ $user->name }}
+    @else
+        <div class="text-center">
+            <h1>ログイン</h1>
+        </div>
+    
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+            
+                {!! Form::open(['route' => 'login.post']) !!}
+                    <div class="form-group">
+                        {!! Form::label('email', 'メールアドレス') !!}
+                        {!! Form::email('email', old('email'), ['class' => 'form-control']) !!}
+                    </div>
+                
+                    <div class="form-group">
+                        {!! Form::label('password', 'パスワード') !!}
+                        {!! Form::password('password', ['class' => 'form-control']) !!}
+                    </div>
+                
+                    {!! Form::submit('ログイン', ['class' => 'btn btn-primary btn-block']) !!}
+                {!! Form::close() !!}
             </div>
         </div>
-    </body>
-</html>
+    @endif
+@endsection
