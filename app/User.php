@@ -36,4 +36,17 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+    
+    public function coupons()
+    {
+        return $this->hasMany(Coupon::class);
+    }
+    
+    public function all_coupons()
+    {
+        $coupons = \DB::table('coupons')->get();
+        
+        return Coupon::all();
+    }
+    
 }

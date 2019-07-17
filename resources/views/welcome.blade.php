@@ -2,8 +2,19 @@
 
 @section('content')
     @if (Auth::check())
-        <?php $user = Auth::user(); ?>
-        {{ $user->name }}
+    <div class="text-left">
+                <h2>クーポン一覧</h2>
+            </div>
+            <div>
+            {!! link_to_route('/csv_file.get', 'CSVインポート',null,  ['class' => 'btn btn-primary']) !!}
+            </div>
+        <div class="row">
+            <div class="col-xs-12">
+                @if (count($coupons) > 0)
+                    @include('coupons.coupons', ['coupons' => $coupons])
+                @endif
+            </div>
+        </div>
     @else
         <div class="text-center">
             <h1>ログイン</h1>
