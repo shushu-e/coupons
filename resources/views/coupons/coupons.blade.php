@@ -33,13 +33,6 @@
                         <td>{!! nl2br(e($coupon->coupon_url)) !!}</td>
                         
                         <td>{!! link_to_route('coupons.show', '詳細', ['id' => $coupon->id], ['class' => 'btn btn-xs btn-default']) !!}</td>
-                        
-                        <!--<td> {!! link_to_route('coupons.edit', '編集', ['id' => $coupon->id], ['class' => 'btn btn-xs btn-success']) !!}</td>
-                        
-                        <td>{!! Form::open(['route' => ['coupons.destroy', $coupon->id], 'method' => 'delete']) !!}
-                                {!! Form::submit('削除', ['class' => 'btn btn-danger btn-xs']) !!}
-                            {!! Form::close() !!}
-                        </td>-->
                     </tr>
                     @endforeach
                 </tbody>
@@ -47,4 +40,3 @@
         </div>
     </li>
 </ul>
-{!! $coupons->render() !!}

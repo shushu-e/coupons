@@ -14,10 +14,30 @@ class WelcomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $data = [];
         if (\Auth::check()) {
+            
+            $store_id = $request->input('store_id');
+            $store_name = $request->input('store_name');
+            $store_url = $request->input('store_url');
+            
+            $query = \App\Coupon::query();
+            
+            if(!empty($store_id)) {
+                $query->where('store_id', 'like', '%'.$store_id.'%');
+            }
+            
+            if(!empty($store_name)) {
+                $query->where('store_name', 'like', '%'.$store_name.'%');
+            }
+            
+            if(!empty($store_url)) {
+                $query->where('store_url', 'like', '%'.$store_url.'%');
+            }
+
+            else{
             $user = \Auth::user();
             $coupons = $user->all_coupons();
             $coupons =\App\Coupon::orderBy('created_at', 'desc')->paginate(10);
@@ -26,8 +46,13 @@ class WelcomeController extends Controller
                 'user' => $user,
                 'coupons' => $coupons,
             ];
+            }
         }
-        return view('welcome', $data);
+        
+        $coupons = $query->get();
+        $coupons = $query->paginate(10);
+        
+        return view('welcome')->with('coupons', $coupons);
     }
    
     /**

@@ -2,6 +2,14 @@
 
 @section('content')
     @if (Auth::check())
+    
+    {!! Form::open(['method' => 'get']) !!}
+    管理番号:{!! Form::number('store_id', null) !!}
+    店舗名:{!! Form::text('store_name', null) !!}
+    記事URL:{!! Form::url('store_url', null) !!}
+    {!! Form::submit('検索', ['class' => 'btn btn-primary']) !!}
+    {!! Form::close() !!}
+    
     <div class="text-left">
                 <h2>クーポン一覧</h2>
             </div>
