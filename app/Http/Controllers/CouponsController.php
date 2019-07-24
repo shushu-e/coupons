@@ -237,6 +237,10 @@ class CouponsController extends Controller
         	case 9:
         	$arr['coupon_url'] = $v;
         	break;
+        	
+        	case 10:
+        	$arr['created_at'] = $v;
+        	break;
  
         	default:
         	break;
@@ -254,4 +258,105 @@ class CouponsController extends Controller
     return redirect('/');
  
   }
+  
+  public function export(Request $request)     //csvエクスポート
+    {
+        //キーワードインプット
+        $store_id = $request->input('store_id');
+        $store_name = $request->input('store_name');
+        $store_url = $request->input('store_url');
+        $large_category = $request->input('large_category');
+        $small_category = $request->input('small_category');
+        $coupon_site = $request->input('coupon_site');
+        $coupon_name = $request->input('coupon_name');
+        $coupon_term = $request->input('coupon_term');
+        $coupon_expire = $request->input('coupon_expire');
+        $coupon_url = $request->input('coupon_url');
+
+        //クエリ生成
+        $query = \App\Coupon::query();
+
+        //もしkeywordがあれば条件設定
+        if(!empty($store_id)) {  
+            $query->where('store_id', $store_id);
+        }
+        
+        if(!empty($store_name)) {
+            $query->where('store_name', 'like', '%'.$store_name.'%');
+        }
+            
+        if(!empty($store_url)) {
+            $query->where('store_url', 'like', '%'.$store_url.'%');
+        }
+            
+        if(!empty($large_category)) {
+            $query->where('large_category', 'like', '%'.$large_category.'%');
+        }
+            
+        if(!empty($small_category)) {
+            $query->where('small_category', 'like', '%'.$small_category.'%');
+        }
+            
+        if(!empty($coupon_site)) {
+            $query->where('coupon_site', 'like', '%'.$coupon_site.'%');
+        }
+            
+        if(!empty($coupon_name)) {
+            $query->where('coupon_name', 'like', '%'.$coupon_name.'%');
+        }
+            
+        if(!empty($coupon_expire)) {
+            $query->where('coupon_expire', 'like', '%'.$coupon_expire.'%');
+        }
+            
+        if(!empty($coupon_term)) {
+            $query->where('coupon_term', 'like', '%'.$coupon_term.'%');
+        }
+            
+        if(!empty($coupon_url)) {
+            $query->where('coupon_url', 'like', '%'.$coupon_url.'%');
+        }
+
+        else{
+            $coupons = \App\Coupon::all();
+        }
+
+        //クエリ実行
+        $coupons = $query->get();
+
+        //仮ファイルOpen
+        $stream = fopen('php://temp','w');
+        
+        //カラム名（フィールド名）
+        fputcsv($stream,['管理番号', '店舗名', '記事URL', '大カテゴリ', '子カテゴリ', 'クーポンサイト名', 'クーポン名', '利用条件', '有効期限', 'クーポンURL']);
+    
+
+        //loop
+        foreach($coupons as $coupon)
+        {
+        
+            //カラムを選択、レコード
+            fputcsv($stream,[$coupon->store_id, $coupon->store_name, $coupon->store_url, $coupon->large_category, $coupon->small_category, $coupon->coupon_site, $coupon->coupon_name, $coupon->coupon_expire, $coupon->coupon_term, $coupon->coupon_url]);
+           
+        }
+
+        //ポインタの先頭へ
+        rewind($stream);
+
+        //変換
+        $csv = mb_convert_encoding(str_replace(PHP_EOL, "\r\n", stream_get_contents($stream)), 'SJIS', 'UTF-8');
+
+        //file名
+        $filename = "クーポン一覧".date('Ymd').".csv";
+
+        //header
+        $headers = array(
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"'
+        );
+
+        //response
+        return \Response::make($csv, 200, $headers);
+    }
 }
+

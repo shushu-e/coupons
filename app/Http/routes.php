@@ -31,4 +31,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('coupons', 'CouponsController', ['only' => ['store', 'destroy', 'create', 'edit', 'update', 'show']]);  //createはクーポン新規登録のフォームページ
     Route::get('/csv_file', 'CouponsController@showImportCSV')->name('/csv_file.get');
     Route::post('/csv_file', 'CouponsController@importCSV')->name('/csv_file.post');
+    Route::get('/welcome', 'CouponsController@export')->name('coupons.export');
 });

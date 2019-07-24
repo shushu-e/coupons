@@ -40,3 +40,4 @@
         </div>
     </li>
 </ul>
+{!! $coupons->appends(['coupons'=>$coupons, 'store_id'=>$store_id, 'store_name'=>$store_name, 'store_url'=>$store_url, 'large_category'=>$large_category, 'small_category'=>$small_category, 'coupon_site'=>$coupon_site, 'coupon_name'=>$coupon_name, 'coupon_term'=>$coupon_term, 'coupon_expire'=>$coupon_expire, 'coupon_url'=>$coupon_url]) !!}

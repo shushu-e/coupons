@@ -16,17 +16,21 @@ class WelcomeController extends Controller
      */
     public function index(Request $request)
     {
-        $data = [];
-        if (\Auth::check()) {
-            
             $store_id = $request->input('store_id');
             $store_name = $request->input('store_name');
             $store_url = $request->input('store_url');
+            $large_category = $request->input('large_category');
+            $small_category = $request->input('small_category');
+            $coupon_site = $request->input('coupon_site');
+            $coupon_name = $request->input('coupon_name');
+            $coupon_term = $request->input('coupon_term');
+            $coupon_expire = $request->input('coupon_expire');
+            $coupon_url = $request->input('coupon_url');
             
             $query = \App\Coupon::query();
             
-            if(!empty($store_id)) {
-                $query->where('store_id', 'like', '%'.$store_id.'%');
+            if(!empty($store_id)) {  
+                $query->where('store_id', $store_id);
             }
             
             if(!empty($store_name)) {
@@ -36,23 +40,53 @@ class WelcomeController extends Controller
             if(!empty($store_url)) {
                 $query->where('store_url', 'like', '%'.$store_url.'%');
             }
-
-            else{
-            $user = \Auth::user();
-            $coupons = $user->all_coupons();
-            $coupons =\App\Coupon::orderBy('created_at', 'desc')->paginate(10);
-
-            $data = [
-                'user' => $user,
-                'coupons' => $coupons,
-            ];
+            
+            if(!empty($large_category)) {
+                $query->where('large_category', 'like', '%'.$large_category.'%');
             }
-        }
+            
+            if(!empty($small_category)) {
+                $query->where('small_category', 'like', '%'.$small_category.'%');
+            }
+            
+            if(!empty($coupon_site)) {
+                $query->where('coupon_site', 'like', '%'.$coupon_site.'%');
+            }
+            
+            if(!empty($coupon_name)) {
+                $query->where('coupon_name', 'like', '%'.$coupon_name.'%');
+            }
+            
+            if(!empty($coupon_expire)) {
+                $query->where('coupon_expire', 'like', '%'.$coupon_expire.'%');
+            }
+            
+            if(!empty($coupon_term)) {
+                $query->where('coupon_term', 'like', '%'.$coupon_term.'%');
+            }
+            
+            if(!empty($coupon_url)) {
+                $query->where('coupon_url', 'like', '%'.$coupon_url.'%');
+            }
+
+           else{
+               $coupons = \App\Coupon::all();
+            }
         
         $coupons = $query->get();
-        $coupons = $query->paginate(10);
+        $coupons = $query->orderBy('created_at','desc')->paginate(10);
         
-        return view('welcome')->with('coupons', $coupons);
+        return view('welcome')->with('coupons', $coupons)
+                              ->with('store_id', $store_id)
+                              ->with('store_name', $store_name)
+                              ->with('store_url', $store_url)
+                              ->with('large_category', $large_category)
+                              ->with('small_category', $small_category)
+                              ->with('coupon_site', $coupon_site)
+                              ->with('coupon_name', $coupon_name)
+                              ->with('coupon_term', $coupon_term)
+                              ->with('coupon_expire', $coupon_expire)
+                              ->with('coupon_url', $coupon_url);
     }
    
     /**
