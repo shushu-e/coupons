@@ -6,6 +6,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12 col-ms-12 col-md-10 col-lg-10">
+            <div class="edit">
             <table class="table table-bordered">
             
               {!! Form::model($coupon,['route' => ['coupons.update', $coupon->id], 'method' => 'put']) !!}
@@ -34,14 +35,17 @@
                 <tr>
                     <div class="form-group">
                         <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4">{!! Form::label('large_category', '大カテゴリ') !!}</th>
-                        <td>{!! Form::select('large_category', ['ランチ' =>'ランチ', 'ラーメン' =>'ラーメン', '食べ歩き'=> '食べ歩き', 'カフェ'=> 'カフェ'], null, ['class' => 'form-control']) !!}</td>
+                        <td>{!! Form::select('large_category', ['ランチ' =>'ランチ', 'ラーメン' =>'ラーメン', '食べ歩き'=> '食べ歩き', 'カフェ'=> 'カフェ'], null, ['placeholder' => '大カテゴリを選択してください' , 'class' => 'form-control']) !!}</td>
                     </div>
                 </tr>
                 
                 <tr>
                     <div class="form-group">
                         <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4">{!! Form::label('small_category', '子カテゴリ') !!}</th>
-                        <td>{!!Form::select('small_category', ['ランチ' =>'ランチ', 'ラーメン' =>'ラーメン', '食べ歩き'=> '食べ歩き', 'カフェ'=> 'カフェ'], null, ['class' => 'form-control'] )!!}</td>
+                        <td>{!! Form::select('small_category', [
+                               'ランチ' => ['カフェランチ' => 'カフェランチ', 'イタリアン' => 'イタリアン', '焼肉・韓国料理' => '焼肉・韓国料理', '和食・寿司' => '和食・寿司', 'フレンチ・西洋料理' => 'フレンチ・西洋料理', '各国料理' => '各国料理' , '洋食・ハンバーグ' => '洋食・ハンバーグ' , '食べ放題' => '食べ放題' , 'その他' => 'その他'],
+                               'ラーメン' => ['ラーメン通おすすめ' => 'ラーメン通おすすめ' ,'醤油ラーメン'=>'醤油ラーメン', '塩ラーメン' => '塩ラーメン' , '味噌ラーメン' => '味噌ラーメン', '豚骨ラーメン' => '豚骨ラーメン', '家系ラーメン' => '家系ラーメン', '魚介ラーメン' => '魚介ラーメン', '二郎インスパイア' => '二郎インスパイア', 'つけ麺' => 'つけ麺', 'その他' => 'その他'],
+                               ], null, ['placeholder' => '子カテゴリを選択してください' , 'class' => 'form-control']) !!}</td>
                     </div>
                 </tr>
                 
@@ -61,16 +65,16 @@
                 
                 <tr>
                     <div class="form-group">
-                        <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4">{!! Form::label('coupon_term', '利用条件') !!}</th>
-                        <td><label>{!! Form::radio('coupon_term', 'ランチ可', null, ['class'=>'circle']) !!}ランチ可</label>
-                        <label>{!! Form::radio('coupon_term', 'ランチ不可', null, ['class'=>'circle']) !!}ランチ不可</label></td>
+                        <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4">{!! Form::label('coupon_expire', '有効期限') !!}</th>
+                        <td>{!! Form::date('coupon_expire', old('coupon_expire'), ['class' => 'form-control']) !!}</td>
                     </div>
                 </tr>
                 
                 <tr>
                     <div class="form-group">
-                        <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4">{!! Form::label('coupon_expire', '有効期限') !!}</th>
-                        <td>{!! Form::date('coupon_expire', old('coupon_expire'), ['class' => 'form-control']) !!}</td>
+                        <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4">{!! Form::label('coupon_term', '利用条件') !!}</th>
+                        <td><label>{!! Form::radio('coupon_term', 'ランチ可', null, ['class'=>'circle']) !!}ランチ可&emsp;</label>
+                        <label>{!! Form::radio('coupon_term', 'ランチ不可', null, ['class'=>'circle']) !!}ランチ不可</label></td>
                     </div>
                 </tr>
                 
@@ -81,9 +85,14 @@
                     </div>
                 </tr>
             </table>
+            </div>
+            
+            <div class="text-center">
+                {!! Form::submit('&emsp;更新&emsp;', ['class' => 'btn btn-primary']) !!}
+            </div>    
                 
-                {!! Form::submit('更新', ['class' => 'btn btn-primary']) !!}
             {!! Form::close() !!}
         </div>
     </div>
+    <br>
 @endsection

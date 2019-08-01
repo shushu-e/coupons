@@ -9,6 +9,7 @@
             <div class="media-body">
                 <?php $user = $coupon->user;?>
                 <div class="col-xs-12 col-ms-12 col-md-10 col-lg-10">
+                    <div class="show">
                     <table class="table table-bordered">
                         <tr>
                             <th class="col-xs-3 col-ms-3 col-md-4 col-lg-4">管理番号</th>
@@ -51,15 +52,16 @@
                             <td>{!! nl2br(e($coupon->coupon_url)) !!}</td>
                         </tr>
                     </table>
+                    
                 
-                    <div style="display:inline-flex">
-                        <div>
-                            {!! link_to_route('coupons.edit', '編集', ['id' => $coupon->id], ['class' => 'btn btn-success']) !!}
-                        </div>
-                        <div>
+                    <div class="text-center">
+                        <div class="btn-group">
                             {!! Form::open(['route' => ['coupons.destroy', $coupon->id], 'method' => 'delete']) !!}
-                                    {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
+                                    {!! Form::submit('&emsp;削除&emsp;', ['class' => 'btn btn-danger']) !!}
                             {!! Form::close() !!}
+                        </div>
+                        <div class="btn-group">
+                            {!! link_to_route('coupons.edit', '&emsp;編集&emsp;', ['id' => $coupon->id], ['class' => 'btn btn-success']) !!}
                         </div>
                     </div>
                 </div>

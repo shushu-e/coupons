@@ -70,11 +70,12 @@ class WelcomeController extends Controller
             }
 
            else{
+               
                $coupons = \App\Coupon::all();
             }
         
         $coupons = $query->get();
-        $coupons = $query->orderBy('created_at','desc')->paginate(10);
+        $coupons = $query->orderBy('created_at','desc')->get();
         
         return view('welcome')->with('coupons', $coupons)
                               ->with('store_id', $store_id)
